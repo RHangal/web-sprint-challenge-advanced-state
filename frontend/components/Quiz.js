@@ -5,8 +5,10 @@ function Quiz(props) {
   const { quiz, fetchQuiz, selectedAnswer, selectAnswer, postAnswer } = props;
 
   useEffect(() => {
-    fetchQuiz();
-  }, []);
+    if (quiz === null) {
+      return fetchQuiz();
+    }
+  });
 
   const handleAnswerOneClick = (e) => {
     e.preventDefault();
