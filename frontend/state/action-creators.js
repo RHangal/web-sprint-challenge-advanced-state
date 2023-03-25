@@ -4,6 +4,7 @@ import {
   MOVE_COUNTERCLOCKWISE,
   SET_QUIZ_INTO_STATE,
   RESET_QUIZ_STATE,
+  SET_SELECTED_ANSWER,
 } from "./action-types";
 import axios from "axios";
 
@@ -26,7 +27,9 @@ export function moveCounterClockwise(state) {
   return { type: MOVE_COUNTERCLOCKWISE, payload: state };
 }
 
-export function selectAnswer() {}
+export function selectAnswer(quizID) {
+  return { type: SET_SELECTED_ANSWER, payload: quizID };
+}
 
 export function setMessage() {}
 

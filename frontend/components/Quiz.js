@@ -1,12 +1,23 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchQuiz } from "../state/action-creators";
+import { fetchQuiz, selectAnswer } from "../state/action-creators";
 function Quiz(props) {
-  const { quiz, fetchQuiz, selectedAnswer } = props;
+  const { quiz, fetchQuiz, selectedAnswer, selectAnswer } = props;
 
   useEffect(() => {
     fetchQuiz();
   }, []);
+
+  const handleAnswerOneClick = (e) => {
+    e.preventDefault();
+    selectAnswer(quiz.answers[0]["answer_id"]);
+  };
+
+  const handleAnswerTwoClick = (e) => {
+    e.preventDefault();
+    selectAnswer(quiz.answers[1]["answer_id"]);
+  };
+
   return (
     <div id="wrapper">
       {
@@ -18,12 +29,20 @@ function Quiz(props) {
             <div id="quizAnswers">
               <div className="answer selected">
                 {quiz.answers[0]["text"]}
-                <button>SELECTED</button>
+                <button onClick={handleAnswerOneClick}>
+                  {selectedAnswer === quiz.answers[0]["answer_id"]
+                    ? "SELECTED"
+                    : "select"}
+                </button>
               </div>
 
               <div className="answer">
                 {quiz.answers[1]["text"]}
-                <button>Select</button>
+                <button onClick={handleAnswerTwoClick}>
+                  {selectedAnswer === quiz.answers[1]["answer_id"]
+                    ? "SELECTED"
+                    : "select"}
+                </button>
               </div>
             </div>
 
@@ -41,6 +60,14 @@ function Quiz(props) {
     </div>
   );
 }
+
+const mapActionsToProps = () => {
+  return {
+    fetchQuiz: fetchQuiz,
+    selectAnswer: selectAnswer,
+  };
+};
+
 const mapStateToProps = (state) => {
   return {
     quiz: state.quiz,
@@ -48,4 +75,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchQuiz })(Quiz);
+export default connect(mapStateToProps, mapActionsToProps())(Quiz);
