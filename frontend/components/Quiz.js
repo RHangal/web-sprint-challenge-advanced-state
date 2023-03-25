@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchQuiz, selectAnswer } from "../state/action-creators";
+import { fetchQuiz, selectAnswer, postAnswer } from "../state/action-creators";
 function Quiz(props) {
-  const { quiz, fetchQuiz, selectedAnswer, selectAnswer } = props;
+  const { quiz, fetchQuiz, selectedAnswer, selectAnswer, postAnswer } = props;
 
   useEffect(() => {
     fetchQuiz();
@@ -16,6 +16,11 @@ function Quiz(props) {
   const handleAnswerTwoClick = (e) => {
     e.preventDefault();
     selectAnswer(quiz.answers[1]["answer_id"]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    postAnswer(quiz.quiz_id, selectedAnswer);
   };
 
   return (
@@ -49,6 +54,7 @@ function Quiz(props) {
             <button
               id="submitAnswerBtn"
               disabled={selectedAnswer ? false : true}
+              onClick={handleSubmit}
             >
               Submit answer
             </button>
@@ -65,6 +71,7 @@ const mapActionsToProps = () => {
   return {
     fetchQuiz: fetchQuiz,
     selectAnswer: selectAnswer,
+    postAnswer: postAnswer,
   };
 };
 

@@ -5,10 +5,13 @@ import {
   SET_QUIZ_INTO_STATE,
   RESET_QUIZ_STATE,
   SET_SELECTED_ANSWER,
+  SET_INFO_MESSAGE,
+  RESET_SELECTED_ANSWER,
 } from "./action-types";
 import axios from "axios";
 
 const URL = "http://localhost:9000/api/quiz/next";
+const answerURL = "http://localhost:9000/api/quiz/answer";
 export function moveClockwise(state) {
   if (state === 5) {
     state = 0;
@@ -31,7 +34,13 @@ export function selectAnswer(quizID) {
   return { type: SET_SELECTED_ANSWER, payload: quizID };
 }
 
-export function setMessage() {}
+export function resetAnswerState() {
+  return { type: RESET_SELECTED_ANSWER };
+}
+
+export function setMessage(message) {
+  return { type: SET_INFO_MESSAGE, payload: message };
+}
 
 export function setQuiz(quiz) {
   return { type: SET_QUIZ_INTO_STATE, payload: quiz };
@@ -62,8 +71,19 @@ export function fetchQuiz() {
     // - Dispatch an action to send the obtained quiz to its state
   };
 }
-export function postAnswer() {
+export function postAnswer(quiz_ID, answer_ID) {
   return function (dispatch) {
+    axios
+      .post(answerURL, { quiz_id: quiz_ID, answer_id: answer_ID })
+      .then((res) => {
+        console.log(res);
+        dispatch(resetAnswerState());
+        dispatch(setMessage(res.data.message));
+        dispatch(fetchQuiz());
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
