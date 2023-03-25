@@ -34,7 +34,13 @@ function Quiz(props) {
             <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className="answer selected">
+              <div
+                className={`answer ${
+                  selectedAnswer === quiz.answers[0]["answer_id"]
+                    ? "selected"
+                    : null
+                }`}
+              >
                 {quiz.answers[0]["text"]}
                 <button onClick={handleAnswerOneClick}>
                   {selectedAnswer === quiz.answers[0]["answer_id"]
@@ -43,7 +49,13 @@ function Quiz(props) {
                 </button>
               </div>
 
-              <div className="answer">
+              <div
+                className={`answer ${
+                  selectedAnswer === quiz.answers[1]["answer_id"]
+                    ? "selected"
+                    : null
+                }`}
+              >
                 {quiz.answers[1]["text"]}
                 <button onClick={handleAnswerTwoClick}>
                   {selectedAnswer === quiz.answers[1]["answer_id"]
