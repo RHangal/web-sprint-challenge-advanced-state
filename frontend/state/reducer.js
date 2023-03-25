@@ -9,6 +9,7 @@ import {
   SET_INFO_MESSAGE,
   RESET_SELECTED_ANSWER,
   INPUT_CHANGE,
+  RESET_FORM,
 } from "./action-types";
 
 const initialWheelState = 0;
@@ -75,6 +76,8 @@ function form(state = initialFormState, action) {
         newTrueAnswer: action.newTrueAnswer,
         newFalseAnswer: action.newFalseAnswer,
       };
+    case RESET_FORM:
+      return (state = initialFormState);
 
     default:
       return state;

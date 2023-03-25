@@ -8,11 +8,13 @@ import {
   SET_INFO_MESSAGE,
   RESET_SELECTED_ANSWER,
   INPUT_CHANGE,
+  RESET_FORM,
 } from "./action-types";
 import axios from "axios";
 
 const URL = "http://localhost:9000/api/quiz/next";
 const answerURL = "http://localhost:9000/api/quiz/answer";
+const newQuizURL = "http://localhost:9000/api/quiz/new";
 export function moveClockwise(state) {
   if (state === 5) {
     state = 0;
@@ -59,7 +61,9 @@ export function inputChange(newQuestion, newTrueAnswer, newFalseAnswer) {
   };
 }
 
-export function resetForm() {}
+export function resetForm() {
+  return { type: RESET_FORM };
+}
 
 // ❗ Async action creators
 export function fetchQuiz() {
@@ -98,8 +102,23 @@ export function postAnswer(quiz_ID, answer_ID) {
     // - Dispatch the fetching of the next quiz
   };
 }
-export function postQuiz() {
+export function postQuiz(newQuestion, newTrueAnswer, newFalseAnswer) {
   return function (dispatch) {
+    axios
+      .post(newQuizURL, {
+        question_text: newQuestion,
+        true_answer_text: newTrueAnswer,
+        false_answer_text: newFalseAnswer,
+      })
+      .then((res) => {
+        dispatch(
+          setMessage(`Congrats: "${res.data.question}" is a great question!`)
+        );
+        dispatch(resetForm());
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form

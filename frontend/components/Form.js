@@ -4,14 +4,14 @@ import * as actionCreators from "../state/action-creators";
 
 export function Form(props) {
   console.log(props);
-  const { form, inputChange } = props;
+  const { form, inputChange, postQuiz } = props;
 
   const onChange = (evt) => {
     switch (evt.target["id"]) {
       case "newQuestion":
         return inputChange(
-          evt.target.value,
-          form.newTrueAnswer.trim(),
+          evt.target.value.trim(),
+          form.newTrueAnswer,
           form.newFalseAnswer
         );
       case "newTrueAnswer":
@@ -31,7 +31,10 @@ export function Form(props) {
     }
   };
 
-  const onSubmit = (evt) => {};
+  const onSubmit = (evt) => {
+    evt.preventDefault();
+    postQuiz(form.newQuestion, form.newTrueAnswer, form.newFalseAnswer);
+  };
 
   return (
     <form id="form" onSubmit={onSubmit}>
