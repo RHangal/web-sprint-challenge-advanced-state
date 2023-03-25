@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { moveClockwise } from "../state/action-creators";
+import { moveClockwise, moveCounterClockwise } from "../state/action-creators";
 
 //Old wheel code
 {
@@ -19,11 +19,15 @@ import { moveClockwise } from "../state/action-creators";
 }
 
 function Wheel(props) {
-  const handleClick = (e) => {
+  const handleClockWiseClick = (e) => {
     e.preventDefault();
     moveClockwise(wheel);
   };
-  const { wheel, moveClockwise } = props;
+  const handleCounterClockWiseClick = (e) => {
+    e.preventDefault();
+    moveCounterClockwise(wheel);
+  };
+  const { wheel, moveClockwise, moveCounterClockwise } = props;
   return (
     <div id="wrapper">
       <div id="wheel">
@@ -41,8 +45,10 @@ function Wheel(props) {
         })}
       </div>
       <div id="keypad">
-        <button id="counterClockwiseBtn">Counter clockwise</button>
-        <button id="clockwiseBtn" onClick={handleClick}>
+        <button id="counterClockwiseBtn" onClick={handleCounterClockWiseClick}>
+          Counter clockwise
+        </button>
+        <button id="clockwiseBtn" onClick={handleClockWiseClick}>
           Clockwise
         </button>
       </div>
@@ -53,4 +59,11 @@ const mapStateToProps = (state) => {
   return { wheel: state.wheel };
 };
 
-export default connect(mapStateToProps, { moveClockwise })(Wheel);
+const mapActionsToProps = () => {
+  return {
+    moveClockwise: moveClockwise,
+    moveCounterClockwise: moveCounterClockwise,
+  };
+};
+
+export default connect(mapStateToProps, mapActionsToProps())(Wheel);
