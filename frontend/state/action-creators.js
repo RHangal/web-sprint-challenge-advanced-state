@@ -7,6 +7,7 @@ import {
   SET_SELECTED_ANSWER,
   SET_INFO_MESSAGE,
   RESET_SELECTED_ANSWER,
+  INPUT_CHANGE,
 } from "./action-types";
 import axios from "axios";
 
@@ -49,7 +50,14 @@ export function resetQuizState() {
   return { type: RESET_QUIZ_STATE };
 }
 
-export function inputChange() {}
+export function inputChange(newQuestion, newTrueAnswer, newFalseAnswer) {
+  return {
+    type: INPUT_CHANGE,
+    newQuestion: newQuestion,
+    newTrueAnswer: newTrueAnswer,
+    newFalseAnswer: newFalseAnswer,
+  };
+}
 
 export function resetForm() {}
 
