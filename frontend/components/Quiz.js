@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchQuiz } from "../state/action-creators";
 function Quiz(props) {
-  const { quiz, fetchQuiz } = props;
+  const { quiz, fetchQuiz, selectedAnswer } = props;
 
   useEffect(() => {
     fetchQuiz();
@@ -27,7 +27,12 @@ function Quiz(props) {
               </div>
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button
+              id="submitAnswerBtn"
+              disabled={selectedAnswer ? false : true}
+            >
+              Submit answer
+            </button>
           </>
         ) : (
           "Loading next quiz..."
@@ -37,7 +42,10 @@ function Quiz(props) {
   );
 }
 const mapStateToProps = (state) => {
-  return { quiz: state.quiz };
+  return {
+    quiz: state.quiz,
+    selectedAnswer: state.selectedAnswer,
+  };
 };
 
 export default connect(mapStateToProps, { fetchQuiz })(Quiz);
